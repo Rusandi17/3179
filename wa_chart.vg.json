@@ -1,0 +1,40 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "title": "Components of Population Change (2022-2023) in WA",
+    "data": {
+      "url": "https://raw.githubusercontent.com/Rusandi17/3179/main/cleaned_LGA_Population_WA.csv",
+      "format": {"type": "csv"}
+    },
+    "transform": [
+      {
+        "fold": ["Natural_Increase", "Net_Internal_Migration", "Net_Overseas_Migration"],
+        "as": ["Component", "Value"]
+      }
+    ],
+    "mark": "bar",
+    "encoding": {
+      "x": {
+        "field": "Local_Government_Area",
+        "type": "nominal",
+        "axis": {"title": "Local Government Area", "labelAngle": -45}
+      },
+      "y": {
+        "aggregate": "sum",
+        "field": "Value",
+        "type": "quantitative",
+        "axis": {"title": "Population Change Components"}
+      },
+      "color": {
+        "field": "Component",
+        "type": "nominal",
+        "scale": {"scheme": "set1"},
+        "legend": {"title": "Components of Change"}
+      },
+      "tooltip": [
+        {"field": "Local_Government_Area", "type": "nominal", "title": "LGA"},
+        {"field": "Value", "type": "quantitative", "title": "Population Change"},
+        {"field": "Component", "type": "nominal", "title": "Component"}
+      ]
+    }
+  }
+  

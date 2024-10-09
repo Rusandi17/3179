@@ -1,0 +1,27 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "title": "Population Density vs. Population Change (2022-2023) in NSW",
+    "data": {
+      "url": "https://raw.githubusercontent.com/Rusandi17/3179/main/cleaned_LGA_Population_NSW.csv",
+      "format": {"type": "csv"}
+    },
+    "mark": "point",
+    "encoding": {
+      "x": {
+        "field": "Population_Density",
+        "type": "quantitative",
+        "axis": {"title": "Population Density"}
+      },
+      "y": {
+        "field": "ERP_Change_2022_23_percent",
+        "type": "quantitative",
+        "axis": {"title": "Percentage Population Change (2022-2023)"}
+      },
+      "tooltip": [
+        {"field": "Local_Government_Area", "type": "nominal", "title": "LGA"},
+        {"field": "Population_Density", "type": "quantitative", "title": "Population Density"},
+        {"field": "ERP_Change_2022_23_percent", "type": "quantitative", "title": "Percentage Population Change (2022-2023)"}
+      ]
+    }
+  }
+  

@@ -1,0 +1,27 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "title": "Population Change (2022-2023) by LGA in Victoria",
+    "data": {
+      "url": "https://raw.githubusercontent.com/Rusandi17/3179/main/cleaned_LGA_Population_Victoria.csv",
+      "format": {"type": "csv"}
+    },
+    "mark": "bar",
+    "encoding": {
+      "x": {
+        "field": "Local_Government_Area",
+        "type": "nominal",
+        "axis": {"title": "Local Government Area", "labelAngle": -45}
+      },
+      "y": {
+        "field": "ERP_Change_2022_23_percent",
+        "type": "quantitative",
+        "axis": {"title": "Percentage Population Change (2022-2023)"}
+      },
+      "tooltip": [
+        {"field": "Local_Government_Area", "type": "nominal", "title": "LGA"},
+        {"field": "ERP_Change_2022_23_no", "type": "quantitative", "title": "Numeric Population Change (2022-2023)"},
+        {"field": "ERP_Change_2022_23_percent", "type": "quantitative", "title": "Percentage Population Change (2022-2023)"}
+      ]
+    }
+  }
+  
