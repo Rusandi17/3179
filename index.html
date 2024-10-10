@@ -7,295 +7,245 @@
   <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
   <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
   <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
-  <style>
-    body {
-      font-family: 'Arial', sans-serif;
-      background-color: #f5f7fa;
-      margin: 0;
-      padding: 0;
-      color: #333;
-      line-height: 1.6;
-    }
-
-    h1, h2, h3 {
-      text-align: center;
-      color: #2c3e50;
-      margin-top: 20px;
-    }
-
-    .container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin: 20px;
-    }
-
-    .info-section {
-      width: 90%;
-      background-color: #fff;
-      padding: 20px;
-      border-left: 5px solid #2980b9;
-      border-radius: 8px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      margin-bottom: 20px;
-    }
-
-    .info-section h2 {
-      color: #2c3e50;
-    }
-
-    .info-section p {
-      font-size: 16px;
-    }
-
-    .dashboard {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      gap: 20px;
-      width: 90%;
-      margin: auto;
-    }
-
-    .chart-container {
-      background-color: #fff;
-      border-radius: 8px;
-      padding: 15px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      width: 48%;
-      height: 450px;
-      margin-bottom: 20px;
-    }
-
-    footer {
-      text-align: center;
-      padding: 20px;
-      background-color: #2c3e50;
-      color: #fff;
-      margin-top: 30px;
-      width: 100%;
-    }
-
-    .highlight-text {
-      font-size: 18px;
-      font-weight: bold;
-      color: #2980b9;
-      margin-bottom: 15px;
-      text-align: center;
-    }
-  </style>
 </head>
 <body>
 
   <h1>Australian Population Insights</h1>
 
-  <div class="container">
-    <!-- Introduction Section -->
-    <div class="info-section">
-      <h2>Overview</h2>
-      <p>
-        This report presents a visual analysis of population changes in various states and Local Government Areas (LGAs) across Australia between 2022 and 2023. 
-        It explores key factors contributing to population change, such as natural increase, internal migration, and overseas migration, across different regions.
-      </p>
+  <div>
+    <!-- Chart 1: ERP 2023 by State/Territory -->
+    <div>
+      <h3>Estimated Resident Population (ERP) in 2023 by Region</h3>
+      <div id="vis1"></div>
     </div>
 
-    <!-- Text between graphs -->
-    <div class="highlight-text">
-      Explore the population changes across different regions of Australia from 2022 to 2023.
+    <!-- Chart 2: ERP 2022 vs. ERP 2023 by Region -->
+    <div>
+      <h3>ERP 2022 vs. ERP 2023 by Region</h3>
+      <div id="vis2"></div>
     </div>
-
-    <!-- Dashboard Charts -->
-    <div class="dashboard">
-      <!-- Chart 1: ERP 2022 vs. ERP 2023 by Region -->
-      <div class="chart-container">
-        <h3>Estimated Resident Population (ERP) 2022 vs. 2023</h3>
-        <div id="regionChart"></div>
-      </div>
-
-      <!-- Chart 2: Population Change by LGA in Victoria, NSW, and WA -->
-      <div class="chart-container">
-        <h3>Population Change by LGA in Victoria, NSW, and WA</h3>
-        <div id="stateCharts"></div>
-      </div>
-    </div>
-
-    <div class="info-section">
-      <h2>Population Dynamics Explained</h2>
-      <p>
-        Understanding population dynamics is crucial for urban planning, infrastructure development, and social services. 
-        The data below reflects not only the natural increase but also the impact of internal migration and overseas migration in driving population changes.
-      </p>
-    </div>
-
-    <!-- Footer Section -->
-    <footer>
-      <p>&copy; 2024 Australian Population Insights</p>
-    </footer>
-
   </div>
 
   <!-- Embed Charts -->
   <script type="text/javascript">
-    // Chart 1: ERP 2022 vs. ERP 2023 by Region
-    const regionChartSpec = {
+    // Visualization 1: Estimated Resident Population 2023 by State/Territory
+    const vis1Spec = {
       "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-      "title": "ERP 2022 vs. ERP 2023 by Region",
+      "title": "ERP 2023 by State/Territory",
       "data": {
-        "url": "https://raw.githubusercontent.com/Rusandi17/3179/main/cleaned_LGA_Population_ACT.csv",
+        "url": "https://cors-anywhere.herokuapp.com/https://github.com/Rusandi17/3179/raw/refs/heads/main/cleaned_LGA_Population_ACT.csv",
         "format": {"type": "csv"}
       },
-      "transform": [
-        {"fold": ["ERP_2022", "ERP_2023"], "as": ["Year", "Value"]}
-      ],
-      "mark": "bar",
-      "encoding": {
-        "x": {"field": "State_Territory", "type": "nominal", "axis": {"title": "Region"}},
-        "y": {
-          "aggregate": "sum",
-          "field": "Value",
-          "type": "quantitative",
-          "axis": {"title": "Estimated Resident Population"}
-        },
-        "color": {
-          "field": "Year",
-          "type": "nominal",
-          "scale": {"scheme": "set1"},
-          "legend": {"title": "Year"}
-        },
-        "tooltip": [
-          {"field": "State_Territory", "type": "nominal", "title": "Region"},
-          {"field": "Value", "type": "quantitative", "title": "Population"},
-          {"field": "Year", "type": "nominal", "title": "Year"}
-        ]
-      },
-      "config": {"view": {"continuousWidth": 600, "continuousHeight": 400}}
-    };
-
-    // Embed the first chart
-    vegaEmbed('#regionChart', regionChartSpec).catch(console.error);
-
-    // Chart 2: Population Change in Victoria, NSW, and WA
-    const stateChartSpec = {
-      "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
       "params": [
         {
-          "name": "selected_letter",
+          "name": "stateSelection",
           "value": "All",
           "bind": {
             "input": "select",
-            "options": ["All", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"],
-            "name": "Select First Letter of LGA: "
+            "options": [
+              "All",
+              "Australian Capital Territory",
+              "New South Wales",
+              "Northern Territory",
+              "Other Territories",
+              "Queensland",
+              "South Australia",
+              "Tasmania",
+              "Total Australia",
+              "Victoria",
+              "Western Australia"
+            ],
+            "name": "Select a state: "
           }
         }
       ],
-      "vconcat": [
+      "transform": [
         {
-          "title": "Population Change (2022-2023) by LGA in Victoria",
-          "data": {
-            "url": "https://raw.githubusercontent.com/Rusandi17/3179/main/cleaned_LGA_Population_Victoria.csv",
-            "format": {"type": "csv"}
-          },
-          "transform": [
-            {
-              "filter": "selected_letter == 'All' || substring(datum.Local_Government_Area, 0, 1) == selected_letter"
-            }
-          ],
-          "mark": "bar",
-          "encoding": {
-            "x": {
-              "field": "Local_Government_Area",
-              "type": "nominal",
-              "axis": {"title": "Local Government Area", "labelAngle": -45}
-            },
-            "y": {
-              "field": "ERP_Change_2022_23_percent",
-              "type": "quantitative",
-              "axis": {"title": "Percentage Population Change (2022-2023)"}
-            },
-            "tooltip": [
-              {"field": "Local_Government_Area", "type": "nominal", "title": "LGA"},
-              {"field": "ERP_Change_2022_23_no", "type": "quantitative", "title": "Numeric Population Change (2022-2023)"},
-              {"field": "ERP_Change_2022_23_percent", "type": "quantitative", "title": "Percentage Population Change (2022-2023)"}
-            ]
-          }
-        },
-        {
-          "title": "Population Density vs. Population Change (2022-2023) in NSW",
-          "data": {
-            "url": "https://raw.githubusercontent.com/Rusandi17/3179/main/cleaned_LGA_Population_NSW.csv",
-            "format": {"type": "csv"}
-          },
-          "transform": [
-            {
-              "filter": "selected_letter == 'All' || substring(datum.Local_Government_Area, 0, 1) == selected_letter"
-            }
-          ],
-          "mark": "point",
-          "encoding": {
-            "x": {
-              "field": "Population_Density",
-              "type": "quantitative",
-              "axis": {"title": "Population Density"}
-            },
-            "y": {
-              "field": "ERP_Change_2022_23_percent",
-              "type": "quantitative",
-              "axis": {"title": "Percentage Population Change (2022-2023)"}
-            },
-            "tooltip": [
-              {"field": "Local_Government_Area", "type": "nominal", "title": "LGA"},
-              {"field": "Population_Density", "type": "quantitative", "title": "Population Density"},
-              {"field": "ERP_Change_2022_23_percent", "type": "quantitative", "title": "Percentage Population Change (2022-2023)"}
-            ]
-          }
-        },
-        {
-          "title": "Components of Population Change (2022-2023) in WA",
-          "data": {
-            "url": "https://raw.githubusercontent.com/Rusandi17/3179/main/cleaned_LGA_Population_WA.csv",
-            "format": {"type": "csv"}
-          },
-          "transform": [
-            {
-              "filter": "selected_letter == 'All' || substring(datum.Local_Government_Area, 0, 1) == selected_letter"
-            },
-            {
-              "fold": ["Natural_Increase", "Net_Internal_Migration", "Net_Overseas_Migration"],
-              "as": ["Component", "Value"]
-            }
-          ],
-          "mark": "bar",
-          "encoding": {
-            "x": {
-              "field": "Local_Government_Area",
-              "type": "nominal",
-              "axis": {"title": "Local Government Area", "labelAngle": -45}
-            },
-            "y": {
-              "aggregate": "sum",
-              "field": "Value",
-              "type": "quantitative",
-              "axis": {"title": "Population Change Components"}
-            },
-            "color": {
-              "field": "Component",
-              "type": "nominal",
-              "scale": {"scheme": "set1"},
-              "legend": {"title": "Components of Change"}
-            },
-            "tooltip": [
-              {"field": "Local_Government_Area", "type": "nominal", "title": "LGA"},
-              {"field": "Value", "type": "quantitative", "title": "Population Change"},
-              {"field": "Component", "type": "nominal", "title": "Component"}
-            ]
-          }
+          "filter": "stateSelection == 'All' || datum.State_Territory == stateSelection"
         }
-      ]
+      ],
+      "mark": "bar",
+      "encoding": {
+        "x": {
+          "field": "State_Territory",
+          "type": "nominal",
+          "axis": {"title": "State/Territory"}
+        },
+        "y": {
+          "field": "ERP_2023",
+          "type": "quantitative",
+          "axis": {"title": "Estimated Population in 2023"}
+        },
+        "color": {
+          "field": "State_Territory",
+          "type": "nominal"
+        },
+        "tooltip": [
+          {"field": "State_Territory", "type": "nominal", "title": "State/Territory"},
+          {"field": "ERP_2023", "type": "quantitative", "title": "Population in 2023"}
+        ]
+      }
     };
 
-    // Embed the second chart (Vega-Lite concatenation of Victoria, NSW, and WA)
-    vegaEmbed('#stateCharts', stateChartSpec).catch(console.error);
-  </script>
+    vegaEmbed('#vis1', vis1Spec).catch(console.error);
+
+    // Visualization 2: ERP 2022 vs. ERP 2023 by Region
+    const vis2Spec = {
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "title": "ERP 2022 vs. ERP 2023 by Region",
+    "layer": [
+      {
+        "data": {
+          "url": "https://cors-anywhere.herokuapp.com/https://github.com/Rusandi17/3179/raw/refs/heads/main/cleaned_LGA_Population_NSW.csv",
+          "format": {"type": "csv"}
+        },
+        "transform": [
+          {"fold": ["ERP_2022", "ERP_2023"], "as": ["Year", "Population"]},
+          {"calculate": "'New South Wales'", "as": "State_Territory"}
+        ],
+        "mark": "bar",
+        "encoding": {
+          "x": {"field": "State_Territory", "type": "nominal", "axis": {"labelAngle": -45}},
+          "y": {"field": "Population", "type": "quantitative", "title": "Estimated Population"},
+          "color": {"field": "Year", "type": "nominal"},
+          "tooltip": [
+            {"field": "State_Territory", "type": "nominal", "title": "State"},
+            {"field": "Population", "type": "quantitative", "title": "Population"},
+            {"field": "Year", "type": "nominal", "title": "Year"}
+          ]
+        }
+      },
+      {
+        "data": {
+          "url": "https://cors-anywhere.herokuapp.com/https://github.com/Rusandi17/3179/raw/refs/heads/main/cleaned_LGA_Population_Victoria.csv",
+          "format": {"type": "csv"}
+        },
+        "transform": [
+          {"fold": ["ERP_2022", "ERP_2023"], "as": ["Year", "Population"]},
+          {"calculate": "'Victoria'", "as": "State_Territory"}
+        ],
+        "mark": "bar",
+        "encoding": {
+          "x": {"field": "State_Territory", "type": "nominal", "axis": {"labelAngle": -45}},
+          "y": {"field": "Population", "type": "quantitative", "title": "Estimated Population"},
+          "color": {"field": "Year", "type": "nominal"},
+          "tooltip": [
+            {"field": "State_Territory", "type": "nominal", "title": "State"},
+            {"field": "Population", "type": "quantitative", "title": "Population"},
+            {"field": "Year", "type": "nominal", "title": "Year"}
+          ]
+        }
+      },
+      {
+        "data": {
+          "url": "https://cors-anywhere.herokuapp.com/https://github.com/Rusandi17/3179/raw/refs/heads/main/cleaned_LGA_Population_Queensland.csv",
+          "format": {"type": "csv"}
+        },
+        "transform": [
+          {"fold": ["ERP_2022", "ERP_2023"], "as": ["Year", "Population"]},
+          {"calculate": "'Queensland'", "as": "State_Territory"}
+        ],
+        "mark": "bar",
+        "encoding": {
+          "x": {"field": "State_Territory", "type": "nominal", "axis": {"labelAngle": -45}},
+          "y": {"field": "Population", "type": "quantitative", "title": "Estimated Population"},
+          "color": {"field": "Year", "type": "nominal"},
+          "tooltip": [
+            {"field": "State_Territory", "type": "nominal", "title": "State"},
+            {"field": "Population", "type": "quantitative", "title": "Population"},
+            {"field": "Year", "type": "nominal", "title": "Year"}
+          ]
+        }
+      },
+      {
+        "data": {
+          "url": "https://cors-anywhere.herokuapp.com/https://github.com/Rusandi17/3179/raw/refs/heads/main/cleaned_LGA_Population_SA.csv",
+          "format": {"type": "csv"}
+        },
+        "transform": [
+          {"fold": ["ERP_2022", "ERP_2023"], "as": ["Year", "Population"]},
+          {"calculate": "'South Australia'", "as": "State_Territory"}
+        ],
+        "mark": "bar",
+        "encoding": {
+          "x": {"field": "State_Territory", "type": "nominal", "axis": {"labelAngle": -45}},
+          "y": {"field": "Population", "type": "quantitative", "title": "Estimated Population"},
+          "color": {"field": "Year", "type": "nominal"},
+          "tooltip": [
+            {"field": "State_Territory", "type": "nominal", "title": "State"},
+            {"field": "Population", "type": "quantitative", "title": "Population"},
+            {"field": "Year", "type": "nominal", "title": "Year"}
+          ]
+        }
+      },
+      {
+        "data": {
+          "url": "https://cors-anywhere.herokuapp.com/https://github.com/Rusandi17/3179/raw/refs/heads/main/cleaned_LGA_Population_WA.csv",
+          "format": {"type": "csv"}
+        },
+        "transform": [
+          {"fold": ["ERP_2022", "ERP_2023"], "as": ["Year", "Population"]},
+          {"calculate": "'Western Australia'", "as": "State_Territory"}
+        ],
+        "mark": "bar",
+        "encoding": {
+          "x": {"field": "State_Territory", "type": "nominal", "axis": {"labelAngle": -45}},
+          "y": {"field": "Population", "type": "quantitative", "title": "Estimated Population"},
+          "color": {"field": "Year", "type": "nominal"},
+          "tooltip": [
+            {"field": "State_Territory", "type": "nominal", "title": "State"},
+            {"field": "Population", "type": "quantitative", "title": "Population"},
+            {"field": "Year", "type": "nominal", "title": "Year"}
+          ]
+        }
+      },
+      {
+        "data": {
+          "url": "https://cors-anywhere.herokuapp.com/https://github.com/Rusandi17/3179/raw/refs/heads/main/cleaned_LGA_Population_Tasmania.csv",
+          "format": {"type": "csv"}
+        },
+        "transform": [
+          {"fold": ["ERP_2022", "ERP_2023"], "as": ["Year", "Population"]},
+          {"calculate": "'Tasmania'", "as": "State_Territory"}
+        ],
+        "mark": "bar",
+        "encoding": {
+          "x": {"field": "State_Territory", "type": "nominal", "axis": {"labelAngle": -45}},
+          "y": {"field": "Population", "type": "quantitative", "title": "Estimated Population"},
+          "color": {"field": "Year", "type": "nominal"},
+          "tooltip": [
+            {"field": "State_Territory", "type": "nominal", "title": "State"},
+            {"field": "Population", "type": "quantitative", "title": "Population"},
+            {"field": "Year", "type": "nominal", "title": "Year"}
+          ]
+        }
+      },
+      {
+        "data": {
+          "url": "https://cors-anywhere.herokuapp.com/https://github.com/Rusandi17/3179/raw/refs/heads/main/cleaned_LGA_Population_NT.csv",
+          "format": {"type": "csv"}
+        },
+        "transform": [
+          {"fold": ["ERP_2022", "ERP_2023"], "as": ["Year", "Population"]},
+          {"calculate": "'Northern Territory'", "as": "State_Territory"}
+        ],
+        "mark": "bar",
+        "encoding": {
+          "x": {"field": "State_Territory", "type": "nominal", "axis": {"labelAngle": -45}},
+          "y": {"field": "Population", "type": "quantitative", "title": "Estimated Population"},
+          "color": {"field": "Year", "type": "nominal"},
+          "tooltip": [
+            {"field": "State_Territory", "type": "nominal", "title": "State"},
+            {"field": "Population", "type": "quantitative", "title": "Population"},
+            {"field": "Year", "type": "nominal", "title": "Year"}
+          ]
+        }
+      }
+    ]
+  };
+
+  vegaEmbed('#vis2', vis2Spec).catch(console.error);
+</script>
+
 </body>
 </html>
-
