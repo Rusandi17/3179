@@ -1,0 +1,58 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "width": 900,
+    "height": 700,
+    "title": "Population by LGA Areas in 2023",
+    "data": {
+      "url": "LGA_2024_AUST_GDA94.json",
+      "format": {
+        "type": "topojson",
+        "feature": "LGA_2024_AUST_GDA94"
+      }
+    },
+    "transform": [
+      {
+        "lookup": "properties.LGA_NAME24",
+        "from": {
+          "data": {
+            "url": "cleaned_LGA_population_data_2023.csv",
+            "format": {"type": "csv"}
+          },
+          "key": "LGA_NAME",
+          "fields": ["ERP_2023", "State"]
+        }
+      }
+    ],
+    "projection": {
+      "type": "mercator"
+    },
+    "mark": {
+      "type": "geoshape",
+      "stroke": "white",
+      "strokeWidth": 0.5
+    },
+    "encoding": {
+      "color": {
+        "field": "ERP_2023",
+        "type": "quantitative",
+        "scale": {
+          "scheme": "yellowgreenblue",
+          "domain": [0, 10000, 50000, 100000, 500000, 1500000],
+          "nice": true
+        },
+        "title": "Population in 2023"
+      },
+      "tooltip": [
+        {"field": "properties.LGA_NAME24", "type": "nominal", "title": "LGA"},
+        {"field": "State", "type": "nominal", "title": "State"},
+        {"field": "ERP_2023", "type": "quantitative", "title": "Population 2023"}
+      ]
+    },
+    "config": {
+      "view": {
+        "stroke": "transparent"
+      },
+      "background": "#f8f8f8"
+    }
+  }
+  
