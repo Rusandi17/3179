@@ -13,7 +13,7 @@
     <h1>Population Map Visualization</h1>
     <div id="map"></div>
 
-    <h1>ERP 2022 vs. ERP 2023 by Region (ACT)</h1>
+    <h1>Select a State for Detailed Population Analysis</h1>
     <div id="act_diagram"></div>
 
     <h1>Top 10 LGAs with Highest Percentage Change (Selected State)</h1>
@@ -23,10 +23,10 @@
         // Embed the map visualization (if needed)
         vegaEmbed('#map', 'https://raw.githubusercontent.com/Rusandi17/3179/main/map.vg.json').catch(console.error);
 
-        // Variable to store the selected state
-        let selectedState = 'SA'; // default to 'SA'
+        // Default state set to SA initially
+        let selectedState = 'SA';
 
-        // Function to render the SA diagram with selected state
+        // Function to update the SA diagram based on the selected state
         function updateSADiagram(state) {
             const saDiagramSpec = {
                 "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
@@ -35,6 +35,7 @@
                     "url": state === 'SA' ? 'https://raw.githubusercontent.com/Rusandi17/3179/main/cleaned_LGA_Population_SA.csv' :
                            state === 'VIC' ? 'https://raw.githubusercontent.com/Rusandi17/3179/main/cleaned_LGA_Population_VIC.csv' :
                            state === 'NSW' ? 'https://raw.githubusercontent.com/Rusandi17/3179/main/cleaned_LGA_Population_NSW.csv' :
+                           state === 'WA' ? 'https://raw.githubusercontent.com/Rusandi17/3179/main/cleaned_LGA_Population_WA.csv' :
                            'https://raw.githubusercontent.com/Rusandi17/3179/main/cleaned_LGA_Population_ACT.csv'
                 },
                 "transform": [
@@ -56,22 +57,22 @@
                 "config": {"view": {"stroke": "transparent"}, "background": "#f8f8f8"}
             };
 
-            // Embed the SA diagram with the selected state data
+            // Embed the updated diagram based on selected state
             vegaEmbed('#sa_diagram', saDiagramSpec).catch(console.error);
         }
 
-        // Embed the ACT diagram with state selection
+        // Embed the ACT diagram and listen for state selection changes
         vegaEmbed('#act_diagram', 'https://raw.githubusercontent.com/Rusandi17/3179/main/act_diagram.vg.json')
             .then(result => {
-                // Listen for changes in selection and update the SA diagram accordingly
+                // Listen for the stateSelect signal (selection of state)
                 result.view.addSignalListener('stateSelect', (name, value) => {
-                    selectedState = value;  // Capture selected state
-                    updateSADiagram(selectedState);  // Update the SA diagram with new state
+                    selectedState = value.State_Territory;  // Capture selected state
+                    updateSADiagram(selectedState);  // Update SA diagram with new data
                 });
             })
             .catch(console.error);
 
-        // Initial render of SA diagram
+        // Initial render for SA diagram (default state)
         updateSADiagram(selectedState);
     </script>
 
