@@ -1,251 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Australian Population Insights</title>
-  <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
-  <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
-  <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vega-Lite Visualizations</title>
+    <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
 </head>
 <body>
 
-  <h1>Australian Population Insights</h1>
+    <h1>Population Map Visualization</h1>
+    <div id="map"></div>
 
-  <div>
-    <!-- Chart 1: ERP 2023 by State/Territory -->
-    <div>
-      <h3>Estimated Resident Population (ERP) in 2023 by Region</h3>
-      <div id="vis1"></div>
-    </div>
+    <h1>ERP 2022 vs. ERP 2023 by Region (ACT)</h1>
+    <div id="act_diagram"></div>
 
-    <!-- Chart 2: ERP 2022 vs. ERP 2023 by Region -->
-    <div>
-      <h3>ERP 2022 vs. ERP 2023 by Region</h3>
-      <div id="vis2"></div>
-    </div>
-  </div>
+    <h1>Top 10 LGAs with Highest Percentage Change (Selected State)</h1>
+    <div id="sa_diagram"></div>
 
-  <!-- Embed Charts -->
-  <script type="text/javascript">
-    // Visualization 1: Estimated Resident Population 2023 by State/Territory
-    const vis1Spec = {
-      "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-      "title": "ERP 2023 by State/Territory",
-      "data": {
-        "url": "https://cors-anywhere.herokuapp.com/https://github.com/Rusandi17/3179/raw/refs/heads/main/cleaned_LGA_Population_ACT.csv",
-        "format": {"type": "csv"}
-      },
-      "params": [
-        {
-          "name": "stateSelection",
-          "value": "All",
-          "bind": {
-            "input": "select",
-            "options": [
-              "All",
-              "Australian Capital Territory",
-              "New South Wales",
-              "Northern Territory",
-              "Other Territories",
-              "Queensland",
-              "South Australia",
-              "Tasmania",
-              "Total Australia",
-              "Victoria",
-              "Western Australia"
-            ],
-            "name": "Select a state: "
-          }
-        }
-      ],
-      "transform": [
-        {
-          "filter": "stateSelection == 'All' || datum.State_Territory == stateSelection"
-        }
-      ],
-      "mark": "bar",
-      "encoding": {
-        "x": {
-          "field": "State_Territory",
-          "type": "nominal",
-          "axis": {"title": "State/Territory"}
-        },
-        "y": {
-          "field": "ERP_2023",
-          "type": "quantitative",
-          "axis": {"title": "Estimated Population in 2023"}
-        },
-        "color": {
-          "field": "State_Territory",
-          "type": "nominal"
-        },
-        "tooltip": [
-          {"field": "State_Territory", "type": "nominal", "title": "State/Territory"},
-          {"field": "ERP_2023", "type": "quantitative", "title": "Population in 2023"}
-        ]
-      }
-    };
+    <script type="text/javascript">
+        // Embed the map visualization (if needed)
+        vegaEmbed('#map', 'https://raw.githubusercontent.com/Rusandi17/3179/main/map.vg.json').catch(console.error);
 
-    vegaEmbed('#vis1', vis1Spec).catch(console.error);
+        // Variable to store the selected state
+        let selectedState = 'SA'; // default to 'SA'
 
-    // Visualization 2: ERP 2022 vs. ERP 2023 by Region
-    const vis2Spec = {
-    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-    "title": "ERP 2022 vs. ERP 2023 by Region",
-    "layer": [
-      {
-        "data": {
-          "url": "https://cors-anywhere.herokuapp.com/https://github.com/Rusandi17/3179/raw/refs/heads/main/cleaned_LGA_Population_NSW.csv",
-          "format": {"type": "csv"}
-        },
-        "transform": [
-          {"fold": ["ERP_2022", "ERP_2023"], "as": ["Year", "Population"]},
-          {"calculate": "'New South Wales'", "as": "State_Territory"}
-        ],
-        "mark": "bar",
-        "encoding": {
-          "x": {"field": "State_Territory", "type": "nominal", "axis": {"labelAngle": -45}},
-          "y": {"field": "Population", "type": "quantitative", "title": "Estimated Population"},
-          "color": {"field": "Year", "type": "nominal"},
-          "tooltip": [
-            {"field": "State_Territory", "type": "nominal", "title": "State"},
-            {"field": "Population", "type": "quantitative", "title": "Population"},
-            {"field": "Year", "type": "nominal", "title": "Year"}
-          ]
-        }
-      },
-      {
-        "data": {
-          "url": "https://cors-anywhere.herokuapp.com/https://github.com/Rusandi17/3179/raw/refs/heads/main/cleaned_LGA_Population_Victoria.csv",
-          "format": {"type": "csv"}
-        },
-        "transform": [
-          {"fold": ["ERP_2022", "ERP_2023"], "as": ["Year", "Population"]},
-          {"calculate": "'Victoria'", "as": "State_Territory"}
-        ],
-        "mark": "bar",
-        "encoding": {
-          "x": {"field": "State_Territory", "type": "nominal", "axis": {"labelAngle": -45}},
-          "y": {"field": "Population", "type": "quantitative", "title": "Estimated Population"},
-          "color": {"field": "Year", "type": "nominal"},
-          "tooltip": [
-            {"field": "State_Territory", "type": "nominal", "title": "State"},
-            {"field": "Population", "type": "quantitative", "title": "Population"},
-            {"field": "Year", "type": "nominal", "title": "Year"}
-          ]
-        }
-      },
-      {
-        "data": {
-          "url": "https://cors-anywhere.herokuapp.com/https://github.com/Rusandi17/3179/raw/refs/heads/main/cleaned_LGA_Population_Queensland.csv",
-          "format": {"type": "csv"}
-        },
-        "transform": [
-          {"fold": ["ERP_2022", "ERP_2023"], "as": ["Year", "Population"]},
-          {"calculate": "'Queensland'", "as": "State_Territory"}
-        ],
-        "mark": "bar",
-        "encoding": {
-          "x": {"field": "State_Territory", "type": "nominal", "axis": {"labelAngle": -45}},
-          "y": {"field": "Population", "type": "quantitative", "title": "Estimated Population"},
-          "color": {"field": "Year", "type": "nominal"},
-          "tooltip": [
-            {"field": "State_Territory", "type": "nominal", "title": "State"},
-            {"field": "Population", "type": "quantitative", "title": "Population"},
-            {"field": "Year", "type": "nominal", "title": "Year"}
-          ]
-        }
-      },
-      {
-        "data": {
-          "url": "https://cors-anywhere.herokuapp.com/https://github.com/Rusandi17/3179/raw/refs/heads/main/cleaned_LGA_Population_SA.csv",
-          "format": {"type": "csv"}
-        },
-        "transform": [
-          {"fold": ["ERP_2022", "ERP_2023"], "as": ["Year", "Population"]},
-          {"calculate": "'South Australia'", "as": "State_Territory"}
-        ],
-        "mark": "bar",
-        "encoding": {
-          "x": {"field": "State_Territory", "type": "nominal", "axis": {"labelAngle": -45}},
-          "y": {"field": "Population", "type": "quantitative", "title": "Estimated Population"},
-          "color": {"field": "Year", "type": "nominal"},
-          "tooltip": [
-            {"field": "State_Territory", "type": "nominal", "title": "State"},
-            {"field": "Population", "type": "quantitative", "title": "Population"},
-            {"field": "Year", "type": "nominal", "title": "Year"}
-          ]
-        }
-      },
-      {
-        "data": {
-          "url": "https://cors-anywhere.herokuapp.com/https://github.com/Rusandi17/3179/raw/refs/heads/main/cleaned_LGA_Population_WA.csv",
-          "format": {"type": "csv"}
-        },
-        "transform": [
-          {"fold": ["ERP_2022", "ERP_2023"], "as": ["Year", "Population"]},
-          {"calculate": "'Western Australia'", "as": "State_Territory"}
-        ],
-        "mark": "bar",
-        "encoding": {
-          "x": {"field": "State_Territory", "type": "nominal", "axis": {"labelAngle": -45}},
-          "y": {"field": "Population", "type": "quantitative", "title": "Estimated Population"},
-          "color": {"field": "Year", "type": "nominal"},
-          "tooltip": [
-            {"field": "State_Territory", "type": "nominal", "title": "State"},
-            {"field": "Population", "type": "quantitative", "title": "Population"},
-            {"field": "Year", "type": "nominal", "title": "Year"}
-          ]
-        }
-      },
-      {
-        "data": {
-          "url": "https://cors-anywhere.herokuapp.com/https://github.com/Rusandi17/3179/raw/refs/heads/main/cleaned_LGA_Population_Tasmania.csv",
-          "format": {"type": "csv"}
-        },
-        "transform": [
-          {"fold": ["ERP_2022", "ERP_2023"], "as": ["Year", "Population"]},
-          {"calculate": "'Tasmania'", "as": "State_Territory"}
-        ],
-        "mark": "bar",
-        "encoding": {
-          "x": {"field": "State_Territory", "type": "nominal", "axis": {"labelAngle": -45}},
-          "y": {"field": "Population", "type": "quantitative", "title": "Estimated Population"},
-          "color": {"field": "Year", "type": "nominal"},
-          "tooltip": [
-            {"field": "State_Territory", "type": "nominal", "title": "State"},
-            {"field": "Population", "type": "quantitative", "title": "Population"},
-            {"field": "Year", "type": "nominal", "title": "Year"}
-          ]
-        }
-      },
-      {
-        "data": {
-          "url": "https://cors-anywhere.herokuapp.com/https://github.com/Rusandi17/3179/raw/refs/heads/main/cleaned_LGA_Population_NT.csv",
-          "format": {"type": "csv"}
-        },
-        "transform": [
-          {"fold": ["ERP_2022", "ERP_2023"], "as": ["Year", "Population"]},
-          {"calculate": "'Northern Territory'", "as": "State_Territory"}
-        ],
-        "mark": "bar",
-        "encoding": {
-          "x": {"field": "State_Territory", "type": "nominal", "axis": {"labelAngle": -45}},
-          "y": {"field": "Population", "type": "quantitative", "title": "Estimated Population"},
-          "color": {"field": "Year", "type": "nominal"},
-          "tooltip": [
-            {"field": "State_Territory", "type": "nominal", "title": "State"},
-            {"field": "Population", "type": "quantitative", "title": "Population"},
-            {"field": "Year", "type": "nominal", "title": "Year"}
-          ]
-        }
-      }
-    ]
-  };
+        // Function to render the SA diagram with selected state
+        function updateSADiagram(state) {
+            const saDiagramSpec = {
+                "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+                "title": "Top 10 LGAs with Highest Percentage Change in Population (2022 vs. 2023)",
+                "data": {
+                    "url": state === 'SA' ? 'https://raw.githubusercontent.com/Rusandi17/3179/main/cleaned_LGA_Population_SA.csv' :
+                           state === 'VIC' ? 'https://raw.githubusercontent.com/Rusandi17/3179/main/cleaned_LGA_Population_VIC.csv' :
+                           state === 'NSW' ? 'https://raw.githubusercontent.com/Rusandi17/3179/main/cleaned_LGA_Population_NSW.csv' :
+                           'https://raw.githubusercontent.com/Rusandi17/3179/main/cleaned_LGA_Population_ACT.csv'
+                },
+                "transform": [
+                    {"window": [{"op": "rank", "as": "rank"}], "sort": [{"field": "ERP_Change_2022_23_percent", "order": "descending"}]},
+                    {"filter": "datum.rank <= 10"}
+                ],
+                "mark": "bar",
+                "encoding": {
+                    "x": {"field": "Local_Government_Area", "type": "nominal", "sort": "-y", "axis": {"title": "LGA Name", "labelAngle": -45}},
+                    "y": {"field": "ERP_Change_2022_23_percent", "type": "quantitative", "axis": {"title": "Percentage Change (%)"}},
+                    "color": {"field": "ERP_Change_2022_23_percent", "type": "quantitative", "scale": {"scheme": "redyellowgreen"}, "legend": {"title": "Percentage Change"}},
+                    "tooltip": [
+                        {"field": "Local_Government_Area", "type": "nominal", "title": "LGA Name"},
+                        {"field": "ERP_2022", "type": "quantitative", "title": "Population 2022"},
+                        {"field": "ERP_2023", "type": "quantitative", "title": "Population 2023"},
+                        {"field": "ERP_Change_2022_23_percent", "type": "quantitative", "title": "Percentage Change (%)"}
+                    ]
+                },
+                "config": {"view": {"stroke": "transparent"}, "background": "#f8f8f8"}
+            };
 
-  vegaEmbed('#vis2', vis2Spec).catch(console.error);
-</script>
+            // Embed the SA diagram with the selected state data
+            vegaEmbed('#sa_diagram', saDiagramSpec).catch(console.error);
+        }
+
+        // Embed the ACT diagram with state selection
+        vegaEmbed('#act_diagram', 'https://raw.githubusercontent.com/Rusandi17/3179/main/act_diagram.vg.json')
+            .then(result => {
+                // Listen for changes in selection and update the SA diagram accordingly
+                result.view.addSignalListener('stateSelect', (name, value) => {
+                    selectedState = value;  // Capture selected state
+                    updateSADiagram(selectedState);  // Update the SA diagram with new state
+                });
+            })
+            .catch(console.error);
+
+        // Initial render of SA diagram
+        updateSADiagram(selectedState);
+    </script>
 
 </body>
 </html>
