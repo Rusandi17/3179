@@ -28,7 +28,7 @@
       "field": "Year",
       "type": "nominal",
       "scale": {
-        "range": ["#0033A0", "#00AEEF"] 
+        "range": ["#0033A0", "#00AEEF"]
       },
       "legend": {"title": "Year"}
     },
@@ -37,6 +37,13 @@
       {"field": "Value", "type": "quantitative", "title": "Population"},
       {"field": "Year", "type": "nominal", "title": "Year"}
     ]
+  },
+  "selection": {
+    "stateSelect": {
+      "type": "single",
+      "fields": ["State_Territory"],
+      "bind": {"input": "select", "options": ["NSW", "VIC", "QLD", "SA", "WA", "TAS", "NT", "ACT"]}
+    }
   },
   "config": {
     "view": {"continuousWidth": 600, "continuousHeight": 400}
