@@ -1,0 +1,93 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f5;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    text-align: center;
+    color: #004d99;
+    margin-bottom: 20px;
+}
+
+.main-title {
+    font-family: 'Georgia', serif;
+    font-size: 2.5em;
+    color: #003366;
+    text-align: center;
+    margin-bottom: 25px;
+    text-transform: uppercase;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.section {
+    width: 80%;
+    padding: 20px;
+    margin: 20px;
+    background-color: #e6f2ff;  /* Light blue background */
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.section h2, .section h3 {
+    color: #003366;
+    font-size: 1.8em;
+    margin-bottom: 10px;
+}
+
+.section p {
+    font-size: 1.1em;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.diagram-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+.diagram-box {
+    width: 50%;  /* Ensure the chart takes half the block */
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    margin-right: 20px;
+}
+
+.description {
+    width: 40%;  /* Ensure the text takes 40% */
+}
+
+.centered-diagram {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#filter-selection {
+    margin-top: 30px;
+    padding: 15px;
+    background-color: #e6f2ff;
+    border: 1px solid #ccd9ff;
+    width: 80%;
+    text-align: center;
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    background-color: #004d99;
+    color: white;
+    margin-top: 40px;
+}
