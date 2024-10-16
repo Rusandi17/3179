@@ -1,0 +1,40 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": "Another Chart by Region",
+  "data": {
+    "url": {
+      "signal": "stateSelection == 'SA' ? 'https://raw.githubusercontent.com/Rusandi17/3179/main/cleaned_LGA_Population_SA.csv' : stateSelection == 'VIC' ? 'https://raw.githubusercontent.com/Rusandi17/3179/main/cleaned_LGA_Population_VIC.csv' : stateSelection == 'NSW' ? 'https://raw.githubusercontent.com/Rusandi17/3179/main/cleaned_LGA_Population_NSW.csv' : 'https://raw.githubusercontent.com/Rusandi17/3179/main/cleaned_LGA_Population_ACT.csv'"
+    },
+    "format": {"type": "csv"}
+  },
+  "mark": "bar",
+  "encoding": {
+    "x": {
+      "field": "State_Territory", 
+      "type": "nominal",
+      "axis": {"title": "Region"}
+    },
+    "y": {
+      "aggregate": "sum",
+      "field": "Value",
+      "type": "quantitative",
+      "axis": {"title": "Total Value"}
+    },
+    "color": {
+      "field": "Year",
+      "type": "nominal",
+      "scale": {
+        "range": ["#FF5733", "#33FF57"]
+      },
+      "legend": {"title": "Year"}
+    },
+    "tooltip": [
+      {"field": "State_Territory", "type": "nominal", "title": "Region"},
+      {"field": "Value", "type": "quantitative", "title": "Total Value"},
+      {"field": "Year", "type": "nominal", "title": "Year"}
+    ]
+  },
+  "config": {
+    "view": {"continuousWidth": 600, "continuousHeight": 400}
+  }
+}
