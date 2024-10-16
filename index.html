@@ -3,49 +3,126 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vega-Lite Visualizations</title>
+    <title>Population Data Visualization</title>
+    <link rel="stylesheet" href="styles.css">
     <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
     <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
     <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
 </head>
 <body>
 
-    <h1>Population Map Visualization</h1>
-    <div id="map"></div> <!-- Map visualization -->
+    <div class="container">
 
-    <h1>Select a State for Detailed Population Analysis</h1>
-    <select id="stateSelect">
-        <option value="All States">All States</option>
-        <option value="NSW">New South Wales (NSW)</option>
-        <option value="VIC">Victoria (VIC)</option>
-        <option value="QLD">Queensland (QLD)</option>
-        <option value="SA">South Australia (SA)</option>
-        <option value="WA">Western Australia (WA)</option>
-        <option value="TAS">Tasmania (TAS)</option>
-        <option value="NT">Northern Territory (NT)</option>
-    </select>
+        <!-- Description before the map -->
+        <section class="section topic-section">
+            <h1 class="main-title">Population Dynamics in Australia: 2022-2023</h1>
+            <p>This visualization highlights the key population trends and shifts in Australia from 2022 to 2023. We explore regional population changes,
+               focusing on different states and Local Government Areas (LGAs) to understand migration patterns, population growth rates, and density distribution across the country.</p>
+        </section>
 
-    <h1>Top 10 LGAs with Highest Percentage Change (Selected State)</h1>
-    <div id="diagram_1"></div>
+        <!-- Map Section with the map visualization and its description -->
+        <section class="section map-section">
+            <div class="diagram-container">
+                <div class="description">
+                    <h3>Geographic Population Distribution</h3>
+                    <p>The map provides an overview of the population distribution in 2023. Each Local Government Area (LGA) is color-coded according to its population size, 
+                       with darker shades indicating more densely populated areas. This allows for a visual comparison of population concentrations across Australia.</p>
+                </div>
+                <div id="map" class="diagram-box" style="width: 300px; height: 250px;"></div> <!-- Adjusted map size -->
+            </div>
+        </section>
 
-    <h1>Another Visualization (Selected State)</h1>
-    <div id="diagram_2"></div>
+        <!-- ERP 2022 vs ERP 2023 Bar Chart -->
+        <section class="section analysis-section">
+            <div class="diagram-container">
+                <div id="act_diagram" class="diagram-box centered-diagram"></div>
+                <div class="description">
+                    <h3>Comparing Population Growth: 2022 vs. 2023</h3>
+                    <p>This bar chart compares the Estimated Resident Population (ERP) between 2022 and 2023 in different regions. The data highlights significant growth 
+                       in states like Victoria and New South Wales, where urbanization continues to drive population increases. Conversely, regions such as the Northern Territory exhibit slower growth trends.</p>
+                </div>
+            </div>
+        </section>
 
-    <h1>Population Change by Suburbs (Selected State)</h1>
-    <div id="diagram_3"></div>
+        <!-- State selection filter -->
+        <section class="section filter-section">
+            <div id="filter-selection">
+                <p>Select a state to filter population data:</p>
+                <select id="stateSelect">
+                    <option value="All States">All States</option>
+                    <option value="NSW">New South Wales (NSW)</option>
+                    <option value="VIC">Victoria (VIC)</option>
+                    <option value="QLD">Queensland (QLD)</option>
+                    <option value="SA">South Australia (SA)</option>
+                    <option value="WA">Western Australia (WA)</option>
+                    <option value="TAS">Tasmania (TAS)</option>
+                    <option value="NT">Northern Territory (NT)</option>
+                </select>
+                <p>This filter allows users to view specific population data based on the selected state. Once a state is selected, the charts and map will automatically update to reflect the state’s data.</p>
+            </div>
+        </section>
 
-    <h1>ERP 2022 vs. ERP 2023 by Region</h1>
-    <div id="act_diagram"></div>
+        <!-- Diagram 1: Top Local Government Areas with Highest Growth -->
+        <section class="section">
+            <h2>Top Local Government Areas with Highest Growth</h2>
+            <div class="diagram-container">
+                <div id="diagram_1" class="diagram-box"></div>
+                <div class="description">
+                    <p>This chart showcases the top Local Government Areas (LGAs) that have experienced the highest percentage of population growth from 2022 to 2023.
+                       These areas reflect changing migration patterns and economic opportunities that are drawing people to specific regions.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Diagram 2: Population Density vs. Population Change -->
+        <section class="section">
+            <h2>Population Density vs. Population Change</h2>
+            <div class="diagram-container">
+                <div id="diagram_2" class="diagram-box"></div>
+                <div class="description">
+                    <p>This scatter plot correlates population density with the percentage change in population for each LGA. By examining these relationships, 
+                       we can identify areas that are becoming more densely populated and predict the potential strain on infrastructure and resources.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Diagram 3: Population Change by Suburbs -->
+        <section class="section">
+            <h2>Population Change by Suburbs</h2>
+            <div class="diagram-container">
+                <div class="description">
+                    <p>This chart breaks down the population changes in different suburban regions, highlighting the roles of natural population increase, internal migration, 
+                       and overseas migration in shaping these trends.</p>
+                </div>
+                <div style="width: 100%; text-align: center;"> <!-- Center the slider -->
+                    <input type="range" id="slider" min="1" max="90" value="1" oninput="document.getElementById('sliderValue').innerText = this.value;">
+                    <label for="slider">Show suburbs from index <span id="sliderValue">1</span> to <span id="sliderEndValue">10</span></label>
+                </div>
+                <div id="diagram_3" class="diagram-box" style="height: 400px;"></div> <!-- Adjust height for better view -->
+            </div>
+        </section>
+
+    </div>
+
+    <footer>
+        <p>© 2024 Population Data Visualization Project. All rights reserved.</p>
+    </footer>
 
     <script type="text/javascript">
         // Embed the map visualization
-        vegaEmbed('#map', 'https://raw.githubusercontent.com/Rusandi17/3179/main/map.vg.json').catch(console.error);
+        vegaEmbed('#map', 'https://raw.githubusercontent.com/Rusandi17/3179/main/map.vg.json', {
+            width: 280,  // Adjust the width
+        height: 200  // Adjust the height
+    }).catch(console.error);
+        
 
         // Embed the static act_diagram
         vegaEmbed('#act_diagram', 'https://raw.githubusercontent.com/Rusandi17/3179/main/act_diagram.vg.json').catch(console.error);
 
-        // Function to update the dynamic diagrams based on the selected state
-        function updateDiagrams(state) {
+        // Function to update the diagrams
+        function updateDiagrams(state, startIndex = 1) {
+            const endIndex = parseInt(startIndex) + 9;
+
             if (state === "All States") {
                 state = "VIC";  // Default to Victoria when "All States" is selected
             }
@@ -69,8 +146,10 @@
                     "format": {"type": "csv"}
                 },
                 "transform": [
-                    {"filter": "isValid(datum.ERP_Change_2022_23_percent) && datum.ERP_Change_2022_23_percent != 0"},
-                    {"window": [{"op": "rank", "as": "rank"}], "sort": [{"field": "ERP_Change_2022_23_percent", "order": "descending"}]},
+                    {
+                        "window": [{"op": "rank", "as": "rank"}],
+                        "sort": [{"field": "ERP_Change_2022_23_percent", "order": "descending"}]
+                    },
                     {"filter": "datum.rank <= 10"}
                 ],
                 "mark": "bar",
@@ -84,34 +163,45 @@
                         {"field": "ERP_2023", "type": "quantitative", "title": "Population 2023"},
                         {"field": "ERP_Change_2022_23_percent", "type": "quantitative", "title": "Percentage Change (%)"}
                     ]
-                },
-                "config": {"view": {"stroke": "transparent"}, "background": "#f8f8f8"}
+                }
             };
             vegaEmbed('#diagram_1', diagram1Spec).catch(console.error);
 
-            // Update diagram_2 (Scatter Plot: Population Density vs. Population Change)
+            // Update diagram_2 (Population Density vs. Change)
             const diagram2Spec = {
                 "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-                "title": "Population Density vs. Population Change (2022-2023) in Selected State",
+                "title": "Population Density vs. Change (2022-2023)",
                 "data": {
                     "url": stateToFileMap[state],
                     "format": {"type": "csv"}
                 },
                 "mark": "point",
                 "encoding": {
-                    "x": {"field": "Population_Density", "type": "quantitative", "axis": {"title": "Population Density"}},
-                    "y": {"field": "ERP_Change_2022_23_percent", "type": "quantitative", "axis": {"title": "Percentage Population Change (2022-2023)"}},
+                    "x": {
+                        "field": "Population_Density",
+                        "type": "quantitative",
+                        "axis": {"title": "Population Density"}
+                    },
+                    "y": {
+                        "field": "ERP_Change_2022_23_percent",
+                        "type": "quantitative",
+                        "axis": {"title": "Population Change (%)"}
+                    },
+                    "color": {
+                        "field": "Local_Government_Area",
+                        "type": "nominal",
+                        "legend": {"title": "LGA"}
+                    },
                     "tooltip": [
                         {"field": "Local_Government_Area", "type": "nominal", "title": "LGA"},
-                        {"field": "Population_Density", "type": "quantitative", "title": "Population Density"},
-                        {"field": "ERP_Change_2022_23_percent", "type": "quantitative", "title": "Percentage Population Change (2022-2023)"}
+                        {"field": "Population_Density", "type": "quantitative", "title": "Density"},
+                        {"field": "ERP_Change_2022_23_percent", "type": "quantitative", "title": "Change (%)"}
                     ]
-                },
-                "config": {"view": {"stroke": "transparent"}, "background": "#f8f8f8"}
+                }
             };
             vegaEmbed('#diagram_2', diagram2Spec).catch(console.error);
 
-            // Update diagram_3 (Bar Chart: Population Change by Suburbs)
+            // Update diagram_3 (Population Change by Suburbs)
             const diagram3Spec = {
                 "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
                 "title": "Population Change by Suburbs (Natural Increase & Migrations)",
@@ -121,46 +211,55 @@
                 },
                 "transform": [
                     {
-                      "window": [{"op": "row_number", "as": "row_number"}],
-                      "sort": [{"field": "Local_Government_Area", "order": "ascending"}]
+                        "window": [{"op": "row_number", "as": "row_number"}],
+                        "sort": [{"field": "Local_Government_Area", "order": "ascending"}]
                     },
                     {
-                      "filter": "datum.row_number >= 1 && datum.row_number <= 10"
+                        "filter": `datum.row_number >= ${startIndex} && datum.row_number < ${endIndex}`
                     },
                     {
-                      "fold": ["Natural_Increase", "Net_Internal_Migration", "Net_Overseas_Migration"],
-                      "as": ["Component", "Value"]
+                        "fold": ["Natural_Increase", "Net_Internal_Migration", "Net_Overseas_Migration"],
+                        "as": ["Component", "Value"]
                     }
                 ],
                 "mark": "bar",
                 "encoding": {
                     "y": {
-                      "field": "Local_Government_Area",
-                      "type": "nominal",
-                      "axis": {"title": "Local Government Area"}
+                        "field": "Local_Government_Area",
+                        "type": "nominal",
+                        "axis": {"title": "Local Government Area"}
                     },
                     "x": {
-                      "aggregate": "sum",
-                      "field": "Value",
-                      "type": "quantitative",
-                      "axis": {"title": "Population Change"}
+                        "aggregate": "sum",
+                        "field": "Value",
+                        "type": "quantitative",
+                        "axis": {"title": "Population Change"}
                     },
                     "color": {
-                      "field": "Component",
-                      "type": "nominal",
-                      "scale": {
-                        "range": ["#6baed6", "#9ecae1", "#c6dbef"]
-                      }
+                        "field": "Component",
+                        "type": "nominal",
+                        "scale": {
+                            "range": ["#6baed6", "#9ecae1", "#c6dbef"]
+                        },
+                        "legend": {"title": "Population Components"}
                     }
                 }
             };
             vegaEmbed('#diagram_3', diagram3Spec).catch(console.error);
         }
 
-        // Attach event listener for state selection change
+        // Attach event listeners for state selection and slider changes
         document.getElementById('stateSelect').addEventListener('change', function() {
             const selectedState = this.value;
-            updateDiagrams(selectedState);
+            updateDiagrams(selectedState, document.getElementById('slider').value);
+        });
+
+        document.getElementById('slider').addEventListener('input', function() {
+            const topN = this.value;
+            document.getElementById('sliderValue').innerText = topN;
+            document.getElementById('sliderEndValue').innerText = parseInt(topN) + 9; // Update end value display
+            const selectedState = document.getElementById('stateSelect').value;
+            updateDiagrams(selectedState, topN);
         });
 
         // Initial render with "All States" selection showing Victoria data by default
