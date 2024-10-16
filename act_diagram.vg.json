@@ -38,13 +38,6 @@
       {"field": "Year", "type": "nominal", "title": "Year"}
     ]
   },
-  "selection": {
-    "stateSelect": {
-      "type": "single",
-      "fields": ["State_Territory"],
-      "bind": {"input": "select", "options": ["NSW", "VIC", "QLD", "SA", "WA", "TAS", "NT", "ACT"]}
-    }
-  },
   "config": {
     "view": {"continuousWidth": 600, "continuousHeight": 400}
   }
