@@ -3,69 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Population Visualization Dashboard</title>
+    <title>Vega-Lite Visualizations</title>
     <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
     <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
     <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
-    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <header>
-        <h1>Population Change Dashboard</h1>
-        <p class="description">This dashboard visualizes the population changes in different Australian states, using various metrics and diagrams to analyze key trends.</p>
-    </header>
+    <h1>Population Map Visualization</h1>
+    <div id="map"></div> <!-- Map visualization -->
 
-    <section id="mapSection">
-        <h2>Population Change Map</h2>
-        <div id="map" class="visualization"></div>
-    </section>
+    <h1>Select a State for Detailed Population Analysis</h1>
+    <select id="stateSelect">
+        <option value="All States">All States</option>
+        <option value="NSW">New South Wales (NSW)</option>
+        <option value="VIC">Victoria (VIC)</option>
+        <option value="QLD">Queensland (QLD)</option>
+        <option value="SA">South Australia (SA)</option>
+        <option value="WA">Western Australia (WA)</option>
+        <option value="TAS">Tasmania (TAS)</option>
+        <option value="NT">Northern Territory (NT)</option>
+    </select>
 
-    <section id="filterExplanation">
-        <h2>Filter Explanation</h2>
-        <p>The dropdown below allows you to select a specific state for which the diagrams will display data. By default, Victoria is selected when 'All States' is chosen.</p>
-        <select id="stateSelect">
-            <option value="All States">All States</option>
-            <option value="NSW">New South Wales (NSW)</option>
-            <option value="VIC">Victoria (VIC)</option>
-            <option value="QLD">Queensland (QLD)</option>
-            <option value="SA">South Australia (SA)</option>
-            <option value="WA">Western Australia (WA)</option>
-            <option value="TAS">Tasmania (TAS)</option>
-            <option value="NT">Northern Territory (NT)</option>
-        </select>
-    </section>
+    <h1>Top 10 LGAs with Highest Percentage Change (Selected State)</h1>
+    <div id="diagram_1"></div>
 
-    <section id="diagram1Section">
-        <h2>Top 10 LGAs by Percentage Change</h2>
-        <div id="diagram_1" class="visualization"></div>
-        <p class="explanation">This bar chart shows the top 10 Local Government Areas (LGAs) with the highest percentage change in population between 2022 and 2023 for the selected state.</p>
-    </section>
+    <h1>Another Visualization (Selected State)</h1>
+    <div id="diagram_2"></div>
 
-    <section id="diagram2Section">
-        <h2>Population Density vs. Population Change</h2>
-        <div id="diagram_2" class="visualization"></div>
-        <p class="explanation">The scatter plot compares population density against the percentage change in population between 2022 and 2023.</p>
-    </section>
+    <h1>Population Change by Suburbs (Selected State)</h1>
+    <div id="diagram_3"></div>
 
-    <section id="actDiagramSection">
-        <h2>ERP 2022 vs. ERP 2023 by Region</h2>
-        <div id="act_diagram" class="visualization"></div>
-        <p class="explanation">This bar chart shows the Estimated Resident Population (ERP) by region for 2022 and 2023. Use this to compare regional growth over the two years.</p>
-    </section>
-
-    <section id="diagram3Section">
-        <h2>Population Change by Suburbs (with Slider)</h2>
-        <div id="diagram_3" class="visualization"></div>
-        <p class="explanation">Use the slider to navigate through different suburbs and view their population change. The stacked bar chart shows population change components such as Natural Increase, Net Internal Migration, and Net Overseas Migration.</p>
-    </section>
+    <h1>ERP 2022 vs. ERP 2023 by Region</h1>
+    <div id="act_diagram"></div>
 
     <script type="text/javascript">
         // Embed the map visualization
-        vegaEmbed('#map', 'map.vg.json').catch(console.error);
+        vegaEmbed('#map', 'https://raw.githubusercontent.com/Rusandi17/3179/main/map.vg.json').catch(console.error);
 
         // Embed the static act_diagram
-        vegaEmbed('#act_diagram', 'act_diagram.vg.json').catch(console.error);
+        vegaEmbed('#act_diagram', 'https://raw.githubusercontent.com/Rusandi17/3179/main/act_diagram.vg.json').catch(console.error);
 
         // Function to update the dynamic diagrams based on the selected state
         function updateDiagrams(state) {
@@ -74,13 +51,13 @@
             }
 
             const stateToFileMap = {
-                'SA': 'cleaned_LGA_Population_SA.csv',
-                'VIC': 'cleaned_LGA_Population_Victoria.csv',
-                'NSW': 'cleaned_LGA_Population_NSW.csv',
-                'WA': 'cleaned_LGA_Population_WA.csv',
-                'TAS': 'cleaned_LGA_Population_Tasmania.csv',
-                'NT': 'cleaned_LGA_Population_NT.csv',
-                'QLD': 'cleaned_LGA_Population_Queensland.csv'
+                'SA': 'https://raw.githubusercontent.com/Rusandi17/3179/main/cleaned_LGA_Population_SA.csv',
+                'VIC': 'https://raw.githubusercontent.com/Rusandi17/3179/main/cleaned_LGA_Population_Victoria.csv',
+                'NSW': 'https://raw.githubusercontent.com/Rusandi17/3179/main/cleaned_LGA_Population_NSW.csv',
+                'WA': 'https://raw.githubusercontent.com/Rusandi17/3179/main/cleaned_LGA_Population_WA.csv',
+                'TAS': 'https://raw.githubusercontent.com/Rusandi17/3179/main/cleaned_LGA_Population_Tasmania.csv',
+                'NT': 'https://raw.githubusercontent.com/Rusandi17/3179/main/cleaned_LGA_Population_NT.csv',
+                'QLD': 'https://raw.githubusercontent.com/Rusandi17/3179/main/cleaned_LGA_Population_Queensland.csv'
             };
 
             // Update diagram_1 (Top 10 LGAs)
@@ -134,7 +111,7 @@
             };
             vegaEmbed('#diagram_2', diagram2Spec).catch(console.error);
 
-            // Update diagram_3 (Population Change by Suburbs)
+            // Update diagram_3 (Bar Chart: Population Change by Suburbs)
             const diagram3Spec = {
                 "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
                 "title": "Population Change by Suburbs (Natural Increase & Migrations)",
@@ -144,43 +121,38 @@
                 },
                 "transform": [
                     {
-                        "window": [{"op": "row_number", "as": "row_number"}],
-                        "sort": [{"field": "Local_Government_Area", "order": "ascending"}]
+                      "window": [{"op": "row_number", "as": "row_number"}],
+                      "sort": [{"field": "Local_Government_Area", "order": "ascending"}]
                     },
                     {
-                        "filter": "datum.row_number >= 1 && datum.row_number < 10" // default to show first 10 rows
+                      "filter": "datum.row_number >= 1 && datum.row_number <= 10"
                     },
                     {
-                        "fold": ["Natural_Increase", "Net_Internal_Migration", "Net_Overseas_Migration"],
-                        "as": ["Component", "Value"]
+                      "fold": ["Natural_Increase", "Net_Internal_Migration", "Net_Overseas_Migration"],
+                      "as": ["Component", "Value"]
                     }
                 ],
                 "mark": "bar",
                 "encoding": {
                     "y": {
-                        "field": "Local_Government_Area",
-                        "type": "nominal",
-                        "axis": {"title": "Local Government Area"}
+                      "field": "Local_Government_Area",
+                      "type": "nominal",
+                      "axis": {"title": "Local Government Area"}
                     },
                     "x": {
-                        "aggregate": "sum",
-                        "field": "Value",
-                        "type": "quantitative",
-                        "axis": {"title": "Population Change"}
+                      "aggregate": "sum",
+                      "field": "Value",
+                      "type": "quantitative",
+                      "axis": {"title": "Population Change"}
                     },
                     "color": {
-                        "field": "Component",
-                        "type": "nominal",
-                        "scale": {"scheme": "set1"},
-                        "legend": {"title": "Component"}
-                    },
-                    "tooltip": [
-                        {"field": "Local_Government_Area", "type": "nominal", "title": "LGA"},
-                        {"field": "Value", "type": "quantitative", "title": "Population Change"},
-                        {"field": "Component", "type": "nominal", "title": "Component"}
-                    ]
-                },
-                "config": {"view": {"stroke": "transparent"}, "background": "#f8f8f8"}
+                      "field": "Component",
+                      "type": "nominal",
+                      "scale": {
+                        "range": ["#6baed6", "#9ecae1", "#c6dbef"]
+                      }
+                    }
+                }
             };
             vegaEmbed('#diagram_3', diagram3Spec).catch(console.error);
         }
@@ -197,4 +169,3 @@
 
 </body>
 </html>
-
