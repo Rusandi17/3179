@@ -1,0 +1,80 @@
+/* General page styling */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    text-align: center;
+    padding: 20px;
+    background-color: #0073e6;
+    color: white;
+}
+
+h1 {
+    font-size: 2.5em;
+    margin-bottom: 10px;
+}
+
+.description {
+    font-size: 1.2em;
+    margin-top: 10px;
+    color: #eaeaea;
+}
+
+/* Section styling */
+section {
+    padding: 20px;
+    margin: 20px 50px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Titles and explanations */
+h2 {
+    font-size: 1.8em;
+    color: #0073e6;
+}
+
+.explanation {
+    font-size: 1em;
+    color: #555;
+    margin-top: 10px;
+}
+
+/* Visualizations */
+.visualization {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    min-height: 300px;
+}
+
+/* Dropdown select for filtering */
+select {
+    padding: 10px;
+    font-size: 1em;
+    border-radius: 5px;
+    margin-top: 10px;
+    background-color: #0073e6;
+    color: white;
+    border: none;
+}
+
+/* Section backgrounds for better clarity */
+#mapSection {
+    background-color: #e6f2ff;
+}
+
+#diagram1Section, #diagram2Section, #actDiagramSection, #diagram3Section {
+    background-color: #f2f9ff;
+}
+
+/* Centering the map and making sure it fits well */
+#map {
+    max-width: 100%;
+    height: 500px;
+    margin: 0 auto;
+}

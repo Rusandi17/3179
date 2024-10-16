@@ -1,0 +1,61 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "title": "Population Change by Suburbs (Natural Increase & Migrations)",
+    "data": {
+      "url": "https://raw.githubusercontent.com/Rusandi17/3179/main/cleaned_LGA_Population_WA.csv",
+      "format": {"type": "csv"}
+    },
+    "transform": [
+      {
+        "window": [{"op": "row_number", "as": "row_number"}],
+        "sort": [{"field": "Local_Government_Area", "order": "ascending"}]
+      },
+      {
+        "filter": "datum.row_number >= startIndex && datum.row_number < endIndex"
+      },
+      {
+        "fold": ["Natural_Increase", "Net_Internal_Migration", "Net_Overseas_Migration"],
+        "as": ["Component", "Value"]
+      }
+    ],
+    "params": [
+      {
+        "name": "startIndex",
+        "value": 1,
+        "bind": {
+          "input": "range",
+          "min": 1,
+          "max": 90,
+          "step": 1,
+          "name": "Start Index"
+        }
+      },
+      {
+        "name": "endIndex",
+        "expr": "startIndex + 9"
+      }
+    ],
+    "mark": "bar",
+    "encoding": {
+      "y": {
+        "field": "Local_Government_Area",
+        "type": "nominal",
+        "axis": {"title": "Local Government Area"}
+      },
+      "x": {
+        "aggregate": "sum",
+        "field": "Value",
+        "type": "quantitative",
+        "axis": {"title": "Population Change"}
+      },
+      "color": {
+        "field": "Component",
+        "type": "nominal",
+        "scale": {
+          "range": ["#6baed6", "#9ecae1", "#c6dbef"] 
+        },
+        "legend": {"title": "Population Components"}
+      }
+    }
+  }
+  
