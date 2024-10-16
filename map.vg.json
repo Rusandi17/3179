@@ -15,7 +15,7 @@
         "lookup": "properties.LGA_NAME24",
         "from": {
           "data": {
-            "url": "https://raw.githubusercontent.com/Rusandi17/3179/main/cleaned_LGA_population_data_2023.csv",
+            "url": "https://raw.githubusercontent.com/Rusandi17/3179/refs/heads/main/cleaned_LGA_population_data_2023.csv",
             "format": {"type": "csv"}
           },
           "key": "LGA_NAME",
