@@ -6,6 +6,7 @@
     "format": {"type": "csv"}
   },
   "transform": [
+    {"filter": "isValid(datum.ERP_2022) && isValid(datum.ERP_2023) && datum.ERP_2022 != null && datum.ERP_2023 != null"},
     {
       "fold": ["ERP_2022", "ERP_2023"],
       "as": ["Year", "Value"]
