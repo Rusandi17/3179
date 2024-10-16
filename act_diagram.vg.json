@@ -2,7 +2,7 @@
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "title": "ERP 2022 vs. ERP 2023 by Region",
   "data": {
-    "url": "https://raw.githubusercontent.com/Rusandi17/3179/main/cleaned_LGA_Population_ACT.csv",
+    "url": "https://raw.githubusercontent.com/Rusandi17/3179/main/cleaned_LGA_Population_VIC.csv", 
     "format": {"type": "csv"}
   },
   "transform": [
